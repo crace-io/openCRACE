@@ -1,0 +1,22 @@
+# default_controls.yaml - A catalog of standard security controls
+controls:
+  - id: "AC-1"
+    name: "Access Control Policy and Procedures"
+    description: "Establish, document, and disseminate an access control policy and associated procedures."
+    category: "Access Control"
+    default_effectiveness: 4 # High effectiveness
+    source: "NIST SP 800-53"
+
+  - id: "CM-2"
+    name: "Baseline Configuration"
+    description: "Develop, document, and maintain a baseline configuration for systems and components."
+    category: "Configuration Management"
+    default_effectiveness: 3 # Medium effectiveness
+    source: "NIST SP 800-53"
+
+  - id: "SC-7"
+    name: "Boundary Protection"
+    description: "Monitor and control communications at external and internal system boundaries."
+    category: "System and Communications Protection"
+    default_effectiveness: 5 # Very high effectiveness
+    source: "NIST SP 800-53"

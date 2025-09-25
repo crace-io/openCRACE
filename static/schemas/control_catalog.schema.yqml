@@ -1,0 +1,41 @@
+$schema: http://json-schema.org/draft-07/schema#
+title: Control Catalog Schema for openCRACE
+description: Schema for defining a catalog of standard security controls.
+type: object
+required:
+  - controls
+properties:
+  controls:
+    type: array
+    description: List of standard control items.
+    items:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - category
+        - default_effectiveness
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the control.
+        name:
+          type: string
+          description: Name of the control.
+        description:
+          type: string
+          description: Detailed description of the control.
+        category:
+          type: string
+          description: Category or family of the control (e.g., Access Control, CM).
+        default_effectiveness:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Default effectiveness rating (1-5) if not specified in an assessment.
+        source:
+          type: string
+          description: Source of the control (e.g., NIST SP 800-53, ISO 27002).
+      additionalProperties: false
+additionalProperties: false

@@ -1,0 +1,75 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ubuntu, macos, windows]
+        arch: [amd64, arm64]
+        exclude:
+          - os: windows
+            arch: arm64
+          - os: ubuntu
+            arch: arm64
+          - os: macos
+            arch: amd64
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          check-latest: true
+
+      - name: Get Go modules cache path
+        id: go-mod-cache
+        run: |
+          echo "cache_path=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
+
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.go-mod-cache.outputs.cache_path }}
+          key: ${{ runner.os }}-go-mod-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-mod-
+
+      - name: Run tests
+        run: go test -v ./... # Runs all tests in the current module with verbose output
+
+      - name: Build
+        run: |
+          BINARY_NAME="openCRACE"
+          if [ "${{ matrix.os }}" = "windows" ]; then
+            BINARY_NAME="openCRACE.exe"
+          fi
+
+          export GOOS=${{ matrix.os }}
+          export GOARCH=${{ matrix.arch }}
+
+          if [ "${{ matrix.os }}" == "macos" ] && [ "${{ matrix.arch }}" == "arm64" ]; then
+             echo "Building for macOS ARM64."
+             export CGO_ENABLED=0
+          fi
+
+          echo "Building openCRACE for GOOS=${GOOS}, GOARCH=${GOARCH}..."
+          go build -o bin/$BINARY_NAME -ldflags="-s -w" ./cmd/openCRACE
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openCRACE-${{ matrix.os }}-${{ matrix.arch }}
+          path: bin/

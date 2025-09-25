@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Risk Definition Schema for openCRACE",
+  "description": "Schema for defining cybersecurity risks within openCRACE.",
+  "type": "object",
+  "required": ["name", "description", "risks"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the overall risk assessment."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the overall risk assessment."
+    },
+    "risks": {
+      "type": "array",
+      "description": "List of individual risk items.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "impact", "likelihood"],
+        "properties": {
+          "id": { "type": "string", "description": "Unique identifier for the risk." },
+          "name": { "type": "string", "description": "Name of the risk." },
+          "description": { "type": "string", "description": "Detailed description of the risk." },
+          "impact": { "type": "integer", "minimum": 1, "maximum": 5, "description": "Severity of impact (1-5)." },
+          "likelihood": { "type": "integer", "minimum": 1, "maximum": 5, "description": "Likelihood of occurrence (1-5)." },
+          "affected_assets": { "type": "array", "items": { "type": "string" }, "description": "Assets affected by this risk." },
+          "threats": { "type": "array", "items": { "type": "string" }, "description": "Threats associated with this risk." },
+          "vulnerabilities": { "type": "array", "items": { "type": "string" }, "description": "Vulnerabilities associated with this risk." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "controls": {
+      "type": "array",
+      "description": "Controls specifically applied in this assessment instance.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "effectiveness": { "type": "integer", "minimum": 1, "maximum": 5 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

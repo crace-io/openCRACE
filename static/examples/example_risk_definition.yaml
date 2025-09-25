@@ -1,0 +1,23 @@
+name: "Website Hosting Risk Assessment"
+description: "Initial cybersecurity risk assessment for the openCRACE website hosting environment."
+risks:
+  - id: "RISK-001"
+    name: "Unpatched Web Server Vulnerability"
+    description: "Failure to patch known vulnerabilities in the web server software."
+    impact: 4
+    likelihood: 3
+    affected_assets: ["Web Server", "Public Website"]
+    threats: ["External Attacker (Exploiting known vulnerability)"]
+    vulnerabilities: ["CVE-2023-XXXX (Apache Struts RCE)"]
+  - id: "RISK-002"
+    name: "Weak Admin Password"
+    description: "Use of easily guessable or default credentials for administration interfaces."
+    impact: 3
+    likelihood: 4
+    affected_assets: ["Admin Portal", "User Accounts"]
+    threats: ["Brute-force Attack", "Credential Stuffing"]
+    vulnerabilities: ["Lack of strong password policy"]
+controls:
+  - id: "CM-2"
+    name: "Baseline Configuration"
+    effectiveness: 3
